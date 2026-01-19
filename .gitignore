@@ -10,6 +10,7 @@ build/
 .next/
 .nuxt/
 .vuepress/dist/
+*.tsbuildinfo
 
 # Environment files
 .env
