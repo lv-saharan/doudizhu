@@ -1,5 +1,5 @@
-import { GameEngine } from "../../shared/src/game/engine";
-import { Player, GameState } from "../../shared/types/game";
+import { GameEngine } from "@shared/game/engine";
+import { Player, GameState } from "@shared/types/game";
 
 export class GameManager {
   private games: Map<string, GameEngine> = new Map();

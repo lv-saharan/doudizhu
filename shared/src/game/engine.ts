@@ -170,7 +170,8 @@ export class GameEngine {
     this.state.currentTurn = (this.state.currentTurn + 1) % 3;
 
     // 如果轮了两圈回到同一个玩家，清除上家出牌记录
-    if (this.state.currentTurn === this.state.lastPlay?.playerId) {
+    const currentPlayerId = this.state.players[this.state.currentTurn]?.id;
+    if (currentPlayerId === this.state.lastPlay?.playerId) {
       this.state.lastPlay = null;
     }
 

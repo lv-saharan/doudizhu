@@ -1,6 +1,7 @@
 import { Server, Socket } from "socket.io";
 import { RoomManager } from "../managers/RoomManager";
 import { GameManager } from "../managers/GameManager";
+import { Player } from "@shared/types/game";
 
 const roomManager = new RoomManager();
 const gameManager = new GameManager();
@@ -13,9 +14,12 @@ export function setupSocketHandlers(io: Server): void {
     socket.on("join-room", (data: { roomId: string; playerName: string }) => {
       try {
         const { roomId, playerName } = data;
-        const player = {
+        const player: Player = {
           id: socket.id,
           name: playerName,
+          cards: [],
+          score: 0,
+          isLandlord: false,
         };
 
         const room = roomManager.addPlayerToRoom(roomId, player);
@@ -44,9 +48,12 @@ export function setupSocketHandlers(io: Server): void {
       (data: { roomName: string; playerName: string }) => {
         try {
           const { roomName, playerName } = data;
-          const player = {
+          const player: Player = {
             id: socket.id,
             name: playerName,
+            cards: [],
+            score: 0,
+            isLandlord: false,
           };
 
           const room = roomManager.createRoom(roomName, player);
@@ -98,6 +105,11 @@ export function setupSocketHandlers(io: Server): void {
         io.to(roomId).emit("game-started", {
           roomId,
           gameState: room.gameState,
+        });
+
+        // 发送每个玩家的可见状态
+        room.players.forEach((player: Player) => {
+          io.to(player.id).emit("game-state", game.getVisibleState(player.id));
         });
 
         // 发送每个玩家的可见状态

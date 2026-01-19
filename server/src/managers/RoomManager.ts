@@ -1,4 +1,4 @@
-import { Room, Player } from "../../shared/types/game";
+import { Room, Player } from "@shared/types/game";
 
 export class RoomManager {
   private rooms: Map<string, Room> = new Map();
@@ -37,7 +37,7 @@ export class RoomManager {
       throw new Error("房间已满");
     }
 
-    if (room.players.some((p) => p.id === player.id)) {
+    if (room.players.some((p: Player) => p.id === player.id)) {
       throw new Error("玩家已在房间中");
     }
 
